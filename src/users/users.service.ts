@@ -25,7 +25,6 @@ export class UsersService {
 
    async  update(id: number,body: Partial<UserEntity>) {
      const user = await this.userRepo.findOne({where: {id}})
-       console.log("user",user)
        if(!user) throw new NotFoundException("User not found")
        Object.assign(user,body)
        return this.userRepo.save(user)

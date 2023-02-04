@@ -11,18 +11,16 @@ content-type: application/json; charset=utf-8
 ###
 GET http://localhost:3000/user/1
 content-type: application/json; charset=utf-8
+####
 
-{
-"email": "asda@gmail.com",
-"password": "Elegancko",
-"asd": "Sdasd"
-}
-###
-PUT http://localhost:3000/user/1
+GET http://localhost:3000/user
+content-type: application/json; charset=utf-8
+####
+
+PATCH http://localhost:3000/user/1
 content-type: application/json; charset=utf-8
 
 {
-  "email": "Alexander@gmail.com",
-  "password": "Alexander",
-  "asd": "Sdasd"
+  "email": "Jakub@gmail.com",
+  "password": "Alexander"
 }
