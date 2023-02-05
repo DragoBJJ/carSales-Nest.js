@@ -3,9 +3,16 @@ POST http://localhost:3000/user/signup
 content-type: application/json; charset=utf-8
 
 {
-  "email": "AleXander123@gmail.com",
-  "password": "AleXander",
-  "asd": "AleXander"
+  "email": "jakub@gmail.com",
+  "password": "jakub"
+}
+### Sign IN
+POST http://localhost:3000/user/signin
+content-type: application/json
+
+{
+  "email": "jakub@gmail.com",
+  "password": "jakub"
 }
 
 ###
@@ -24,3 +31,12 @@ content-type: application/json; charset=utf-8
   "email": "Jakub@gmail.com",
   "password": "Alexander"
 }
+
+### Get the currently signed in user
+
+GET http://localhost:3000/user/whoami
+
+
+### Sign out
+
+POST http://localhost:3000/user/signout
