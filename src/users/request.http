@@ -3,9 +3,9 @@ POST http://localhost:3000/user/signup
 content-type: application/json; charset=utf-8
 
 {
-  "email": "asda@gmail.com",
-  "password": "Elegancko",
-  "asd": "Sdasd"
+  "email": "AleXander123@gmail.com",
+  "password": "AleXander",
+  "asd": "AleXander"
 }
 
 ###
