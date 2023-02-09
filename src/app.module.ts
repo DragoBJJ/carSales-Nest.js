@@ -27,12 +27,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         };
       },
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'sqlite',
-    //   database: process.env.NODE_ENV === 'test' ? 'test.sqlite' : 'db.sqlite',
-    //   entities: [UserEntity, ReportEntity],
-    //   synchronize: true,
-    // }),
     ReportsModule,
     UsersModule,
   ],
@@ -43,6 +37,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       provide: APP_PIPE,
       useValue: new ValidationPipe({
         whitelist: true,
+        transform: true,
       }),
     },
   ],

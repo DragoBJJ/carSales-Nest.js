@@ -26,6 +26,7 @@
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/typeorm": "^9.0.1",
     "@types/cookie-session": "^2.0.44",
+    "class-validator": "^0.13.0",
     "cookie-session": "^2.0.0",
     "cross-env": "^7.0.3",
     "reflect-metadata": "^0.1.13",
