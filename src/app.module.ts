@@ -8,7 +8,6 @@ import { UsersModule } from './users/users.module';
 const cookieSession = require('cookie-session');
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeormConfigService } from './config/typeorm.config';
-const dbConfig = require('../ormconfig.js');
 
 @Module({
   imports: [
