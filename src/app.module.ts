@@ -5,10 +5,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ReportsModule } from './reports/reports.module';
 import { UsersModule } from './users/users.module';
-import { UserEntity } from './users/user.entity';
-import { ReportEntity } from './reports/report.entity';
 const cookieSession = require('cookie-session');
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeormConfigService } from './config/typeorm.config';
+const dbConfig = require('../ormconfig.js');
 
 @Module({
   imports: [
@@ -17,15 +17,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     TypeOrmModule.forRootAsync({
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        return {
-          type: 'sqlite',
-          database: config.get<string>('DB_NAME'),
-          synchronize: true,
-          entities: [UserEntity, ReportEntity],
-        };
-      },
+      useClass: TypeormConfigService,
     }),
     ReportsModule,
     UsersModule,
@@ -43,11 +35,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   ],
 })
 export class AppModule {
+  constructor(public configService: ConfigService) {}
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(
         cookieSession({
-          keys: ['cookie'],
+          keys: [this.configService.get('COOKIE_KEY')],
         }),
       )
       .forRoutes('*');
