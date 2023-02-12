@@ -1,24 +1,64 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+const { MigrationInterface, QueryRunner, Table } = require('typeorm');
 
-export class initialSchema1676051235415 implements MigrationInterface {
-    name = 'initialSchema1676051235415'
+module.exports = class initialSchema1625847615203 {
+  name = 'initialSchema1625847615203';
 
-    public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TABLE "user_entity" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "email" varchar NOT NULL, "password" varchar NOT NULL, "admin" boolean NOT NULL DEFAULT (1))`);
-        await queryRunner.query(`CREATE TABLE "report_entity" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "approved" boolean NOT NULL DEFAULT (0), "price" integer NOT NULL, "make" varchar NOT NULL, "model" varchar NOT NULL, "year" integer NOT NULL, "lng" integer NOT NULL, "lat" integer NOT NULL, "mileage" integer NOT NULL, "userId" integer)`);
-        await queryRunner.query(`CREATE TABLE "temporary_report_entity" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "approved" boolean NOT NULL DEFAULT (0), "price" integer NOT NULL, "make" varchar NOT NULL, "model" varchar NOT NULL, "year" integer NOT NULL, "lng" integer NOT NULL, "lat" integer NOT NULL, "mileage" integer NOT NULL, "userId" integer, CONSTRAINT "FK_8f2828e57b5484726488f72ad58" FOREIGN KEY ("userId") REFERENCES "user_entity" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`);
-        await queryRunner.query(`INSERT INTO "temporary_report_entity"("id", "approved", "price", "make", "model", "year", "lng", "lat", "mileage", "userId") SELECT "id", "approved", "price", "make", "model", "year", "lng", "lat", "mileage", "userId" FROM "report_entity"`);
-        await queryRunner.query(`DROP TABLE "report_entity"`);
-        await queryRunner.query(`ALTER TABLE "temporary_report_entity" RENAME TO "report_entity"`);
-    }
+  async up(queryRunner) {
+    await queryRunner.createTable(
+      new Table({
+        name: 'user',
+        columns: [
+          {
+            name: 'id',
+            type: 'integer',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment',
+          },
+          {
+            name: 'email',
+            type: 'varchar',
+          },
+          {
+            name: 'password',
+            type: 'varchar',
+          },
+          {
+            name: 'admin',
+            type: 'boolean',
+            default: 'true',
+          },
+        ],
+      }),
+    );
 
-    public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`ALTER TABLE "report_entity" RENAME TO "temporary_report_entity"`);
-        await queryRunner.query(`CREATE TABLE "report_entity" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "approved" boolean NOT NULL DEFAULT (0), "price" integer NOT NULL, "make" varchar NOT NULL, "model" varchar NOT NULL, "year" integer NOT NULL, "lng" integer NOT NULL, "lat" integer NOT NULL, "mileage" integer NOT NULL, "userId" integer)`);
-        await queryRunner.query(`INSERT INTO "report_entity"("id", "approved", "price", "make", "model", "year", "lng", "lat", "mileage", "userId") SELECT "id", "approved", "price", "make", "model", "year", "lng", "lat", "mileage", "userId" FROM "temporary_report_entity"`);
-        await queryRunner.query(`DROP TABLE "temporary_report_entity"`);
-        await queryRunner.query(`DROP TABLE "report_entity"`);
-        await queryRunner.query(`DROP TABLE "user_entity"`);
-    }
+    await queryRunner.createTable(
+      new Table({
+        name: 'report',
+        columns: [
+          {
+            name: 'id',
+            type: 'integer',
+            isPrimary: true,
+            isGenerated: true,
+            generationStrategy: 'increment',
+          },
+          { name: 'approved', type: 'boolean', default: 'false' },
+          { name: 'price', type: 'float' },
+          { name: 'make', type: 'varchar' },
+          { name: 'model', type: 'varchar' },
+          { name: 'year', type: 'integer' },
+          { name: 'lng', type: 'float' },
+          { name: 'lat', type: 'float' },
+          { name: 'mileage', type: 'integer' },
+          { name: 'userId', type: 'integer' },
+        ],
+      }),
+    );
+  }
 
-}
+  async down(queryRunner) {
+    await queryRunner.query(`DROP TABLE ""report""`);
+    await queryRunner.query(`DROP TABLE ""user""`);
+  }
+};

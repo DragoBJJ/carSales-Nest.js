@@ -6,11 +6,21 @@ import { Injectable } from '@nestjs/common';
 export class TypeormConfigService implements TypeOrmOptionsFactory {
   constructor(private configService: ConfigService) {}
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    return {
+    const isTest = process.env.NODE_ENV === 'test';
+    console.log('isTest', isTest);
+    const dbConfig: Partial<TypeOrmModuleOptions> = {
       type: 'sqlite',
       synchronize: false,
       database: this.configService.get<string>('DB_NAME'),
       autoLoadEntities: true,
     };
+    if (isTest) {
+      Object.assign(dbConfig, {
+        synchronize: true,
+        migrationsRun: true,
+        migrations: ['src/migrations/*.ts'],
+      });
+    }
+    return dbConfig;
   }
 }
